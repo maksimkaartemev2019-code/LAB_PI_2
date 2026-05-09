@@ -1,0 +1,106 @@
+<UserControl x:Class="LAB_PI_2.Views.TriggersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="18">
+            <WrapPanel>
+                <Button Content="Важность" Command="{Binding ToggleImportantCommand}"/>
+                <Button Content="Подтверждение" Command="{Binding ToggleConfirmedCommand}"/>
+                <Button Content="Статус" Command="{Binding ChangeStatusCommand}"/>
+                <Button Content="Событие" Command="{Binding CountEventCommand}"/>
+            </WrapPanel>
+
+            <GroupBox Header="Trigger: реагирует на свойство элемента">
+                <TextBox Text="Наведите курсор или сфокусируйте поле" Width="320">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                            <Style.Triggers>
+                                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                    <Setter Property="Background" Value="#FEF3C7"/>
+                                    <Setter Property="BorderBrush" Value="#F59E0B"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+            </GroupBox>
+
+            <GroupBox Header="DataTrigger: реагирует на свойство ViewModel">
+                <Border Padding="14" BorderThickness="1" BorderBrush="{StaticResource LineBrush}" CornerRadius="6">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="#F8FAFC"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsImportant}" Value="True">
+                                    <Setter Property="Background" Value="#FEE2E2"/>
+                                    <Setter Property="BorderBrush" Value="#EF4444"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <TextBlock Text="{Binding IsImportant, StringFormat=Важная запись: {0}}"/>
+                </Border>
+            </GroupBox>
+
+            <GroupBox Header="MultiTrigger: несколько свойств одного элемента">
+                <TextBox Text="Наведение + фокус меняют оформление" Width="360">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                            <Style.Triggers>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsMouseOver" Value="True"/>
+                                        <Condition Property="IsKeyboardFocusWithin" Value="True"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Background" Value="#DBEAFE"/>
+                                    <Setter Property="BorderBrush" Value="#2563EB"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </MultiTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+            </GroupBox>
+
+            <GroupBox Header="MultiDataTrigger: несколько свойств данных">
+                <Border Padding="14" BorderThickness="1" CornerRadius="6">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="#F8FAFC"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource LineBrush}"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsImportant}" Value="True"/>
+                                        <Condition Binding="{Binding IsConfirmed}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="#DCFCE7"/>
+                                    <Setter Property="BorderBrush" Value="#22C55E"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <TextBlock Text="{Binding Status, StringFormat=Статус: {0}. Важность и подтверждение подсвечивают блок вместе.}"/>
+                </Border>
+            </GroupBox>
+
+            <GroupBox Header="EventTrigger: запускает анимацию на событие">
+                <Border x:Name="AnimatedCard" Padding="14" Background="#F8FAFC" BorderBrush="{StaticResource LineBrush}" BorderThickness="1" CornerRadius="6">
+                    <Border.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.45" Duration="0:0:0.18" AutoReverse="True"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Border.Triggers>
+                    <TextBlock Text="{Binding EventCount, StringFormat=Наведите мышь или нажмите кнопку события. Счетчик команд: {0}}"/>
+                </Border>
+            </GroupBox>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

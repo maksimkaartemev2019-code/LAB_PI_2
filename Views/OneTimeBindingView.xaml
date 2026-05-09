@@ -1,0 +1,38 @@
+<UserControl x:Class="LAB_PI_2.Views.OneTimeBindingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="18">
+            <GroupBox Header="Прямая одноразовая привязка">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource SectionTitle}" Text="OneTime берет значение один раз при создании привязки"/>
+                    <WrapPanel>
+                        <TextBox x:Name="InitialBox" Text="Первое значение"/>
+                        <Border Style="{StaticResource ValueBadge}">
+                            <TextBlock Text="{Binding Text, ElementName=InitialBox, Mode=OneTime}"/>
+                        </Border>
+                        <Border Style="{StaticResource ValueBadge}">
+                            <TextBlock Text="{Binding Text, ElementName=InitialBox, Mode=OneWay}"/>
+                        </Border>
+                    </WrapPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="OneTime через ViewModel">
+                <StackPanel>
+                    <WrapPanel>
+                        <Border Style="{StaticResource ValueBadge}">
+                            <TextBlock Text="{Binding CourseTitle, Mode=OneTime}"/>
+                        </Border>
+                        <Border Style="{StaticResource ValueBadge}">
+                            <TextBlock Text="{Binding CourseTitle, Mode=OneWay}"/>
+                        </Border>
+                    </WrapPanel>
+                    <TextBlock Text="{Binding Version, StringFormat=Версия источника: {0}}"/>
+                    <Button Content="Изменить источник" Command="{Binding ChangeSourceCommand}"/>
+                    <TextBlock Margin="0,12,0,0" FontWeight="SemiBold" Text="{Binding CommandResult}"/>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
