@@ -1,62 +1,41 @@
 using System.Collections.ObjectModel;
-using System.Windows.Input;
-using LAB_PI_2.Infrastructure;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace LAB_PI_2.ViewModels;
 
-public sealed class DefaultBindingViewModel : ObservableObject
+public sealed partial class DefaultBindingViewModel : ObservableObject
 {
+    [ObservableProperty]
     private string userName = "Алексей";
-    private double progress = 35;
-    private bool notificationsEnabled = true;
-    private string selectedRole = "Разработчик";
-    private string commandResult = "Команда еще не выполнялась";
 
-    public DefaultBindingViewModel()
-    {
-        ApplyCommand = new RelayCommand(_ => CommandResult = $"Применено: {UserName}, {SelectedRole}, {Progress:0}%");
-        ResetCommand = new RelayCommand(_ =>
-        {
-            UserName = "Алексей";
-            Progress = 35;
-            NotificationsEnabled = true;
-            SelectedRole = Roles[0];
-            CommandResult = "Значения сброшены командой";
-        });
-    }
+    [ObservableProperty]
+    private double progress = 35;
+
+    [ObservableProperty]
+    private bool notificationsEnabled = true;
+
+    [ObservableProperty]
+    private string selectedRole = "Разработчик";
+
+    [ObservableProperty]
+    private string commandResult = "Команда еще не выполнялась";
 
     public ObservableCollection<string> Roles { get; } = new() { "Разработчик", "Тестировщик", "Аналитик" };
 
-    public string UserName
+    [RelayCommand]
+    private void Apply()
     {
-        get => userName;
-        set => SetProperty(ref userName, value);
+        CommandResult = $"Применено: {UserName}, {SelectedRole}, {Progress:0}%";
     }
 
-    public double Progress
+    [RelayCommand]
+    private void Reset()
     {
-        get => progress;
-        set => SetProperty(ref progress, value);
+        UserName = "Алексей";
+        Progress = 35;
+        NotificationsEnabled = true;
+        SelectedRole = Roles[0];
+        CommandResult = "Значения сброшены командой";
     }
-
-    public bool NotificationsEnabled
-    {
-        get => notificationsEnabled;
-        set => SetProperty(ref notificationsEnabled, value);
-    }
-
-    public string SelectedRole
-    {
-        get => selectedRole;
-        set => SetProperty(ref selectedRole, value);
-    }
-
-    public string CommandResult
-    {
-        get => commandResult;
-        set => SetProperty(ref commandResult, value);
-    }
-
-    public ICommand ApplyCommand { get; }
-    public ICommand ResetCommand { get; }
 }

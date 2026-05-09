@@ -1,49 +1,43 @@
-using System.Windows.Input;
-using LAB_PI_2.Infrastructure;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace LAB_PI_2.ViewModels;
 
-public sealed class TriggersViewModel : ObservableObject
+public sealed partial class TriggersViewModel : ObservableObject
 {
+    [ObservableProperty]
     private bool isImportant;
+
+    [ObservableProperty]
     private bool isConfirmed;
+
+    [ObservableProperty]
     private string status = "Черновик";
+
+    [ObservableProperty]
     private int eventCount;
 
-    public TriggersViewModel()
+    [RelayCommand]
+    private void ToggleImportant()
     {
-        ToggleImportantCommand = new RelayCommand(_ => IsImportant = !IsImportant);
-        ToggleConfirmedCommand = new RelayCommand(_ => IsConfirmed = !IsConfirmed);
-        ChangeStatusCommand = new RelayCommand(_ => Status = Status == "Черновик" ? "Готово" : "Черновик");
-        CountEventCommand = new RelayCommand(_ => EventCount++);
+        IsImportant = !IsImportant;
     }
 
-    public bool IsImportant
+    [RelayCommand]
+    private void ToggleConfirmed()
     {
-        get => isImportant;
-        set => SetProperty(ref isImportant, value);
+        IsConfirmed = !IsConfirmed;
     }
 
-    public bool IsConfirmed
+    [RelayCommand]
+    private void ChangeStatus()
     {
-        get => isConfirmed;
-        set => SetProperty(ref isConfirmed, value);
+        Status = Status == "Черновик" ? "Готово" : "Черновик";
     }
 
-    public string Status
+    [RelayCommand]
+    private void CountEvent()
     {
-        get => status;
-        set => SetProperty(ref status, value);
+        EventCount++;
     }
-
-    public int EventCount
-    {
-        get => eventCount;
-        set => SetProperty(ref eventCount, value);
-    }
-
-    public ICommand ToggleImportantCommand { get; }
-    public ICommand ToggleConfirmedCommand { get; }
-    public ICommand ChangeStatusCommand { get; }
-    public ICommand CountEventCommand { get; }
 }
