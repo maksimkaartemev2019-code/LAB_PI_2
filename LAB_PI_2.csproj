@@ -8,4 +8,7 @@
     <RootNamespace>LAB_PI_2</RootNamespace>
     <AssemblyName>LAB_PI_2</AssemblyName>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+  </ItemGroup>
 </Project>
